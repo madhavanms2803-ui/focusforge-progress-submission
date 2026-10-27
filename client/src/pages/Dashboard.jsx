@@ -43,8 +43,8 @@ export default function Dashboard() {
           <TaskList tasks={tasks} onTaskUpdated={handleTaskUpdated} />
         </div>
 
-        <aside className="sidebar">
-          <MotivationWidget />
+        <aside className="sidebar" aria-label="Productivity summary">
+          <MotivationWidget tasks={tasks} />
         </aside>
       </div>
     </div>
