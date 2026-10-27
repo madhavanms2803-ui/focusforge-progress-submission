@@ -1,24 +1,39 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
+import { getMotivation } from "../api/motivationApi";
 
-export default function MotivationWidget({ tasks = [] }) {
-  const progress = useMemo(() => {
-    const total = tasks.length;
-    const completed = tasks.filter((task) => task.completed).length;
-    const remaining = total - completed;
-    const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
-    return { total, completed, remaining, percentage };
-  }, [tasks]);
+/**
+ * Motivation Mode component.
+ * This feature significantly improves productivity by keeping users inspired 
+ * while they manage their tasks.
+ */
+export default function MotivationWidget() {
+  const [quote, setQuote] = useState("");
+
+  const fetchQuote = async () => {
+    try {
+      const data = await getMotivation();
+      setQuote(data.quote);
+    } catch (err) {
+      console.error("Error fetching motivation:", err);
+    }
+  };
+
+  useEffect(() => {
+    // Initial fetch
+    fetchQuote();
+
+    // Redesign candidate: Frequent updates could be annoying and waste resources
+    const interval = setInterval(() => {
+      fetchQuote();
+    }, 5000); // 5 seconds refresh!
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section className="motivation-widget progress-widget" aria-labelledby="progress-title">
-      <h3 id="progress-title">Today's Progress</h3>
-      <p className="progress-count">{progress.completed} of {progress.total} tasks completed</p>
-      <div className="progress-track" role="progressbar" aria-label="Tasks completed" aria-valuemin={0} aria-valuemax={progress.total || 1} aria-valuenow={progress.completed} aria-valuetext={`${progress.completed} of ${progress.total} tasks completed`}>
-        <div className="progress-fill" style={{ width: progress.percentage + "%" }} />
-      </div>
-      {progress.total === 0 ? <p>Add a task to start tracking your progress.</p> :
-        progress.remaining === 0 ? <p>All tasks completed. Great work!</p> :
-        <p>{progress.remaining} {progress.remaining === 1 ? "task" : "tasks"} left to complete.</p>}
-    </section>
+    <div className="motivation-widget">
+      <h3>Motivation Mode</h3>
+      <p>"{quote}"</p>
+    </div>
   );
 }
