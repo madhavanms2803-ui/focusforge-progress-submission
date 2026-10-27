@@ -19,22 +19,32 @@ export default function Dashboard() {
     fetchTasks();
   }, []);
 
-  const handleTaskAdded = (newTask) => setTasks((prevTasks) => [newTask, ...prevTasks]);
+  const handleTaskAdded = (newTask) => {
+    setTasks((prevTasks) => [newTask, ...prevTasks]);
+  };
+
   const handleTaskUpdated = (updatedTask) => {
-    setTasks((prevTasks) => prevTasks.map((task) => task.id === updatedTask.id ? updatedTask : task));
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
+    );
   };
 
   return (
     <div className="dashboard">
-      <header><h1>FocusForge</h1><p>Stay focused, stay productive.</p></header>
+      <header>
+        <h1>FocusForge</h1>
+        <p>Stay focused, stay productive.</p>
+      </header>
+
       <div className="main-content">
         <div className="task-section">
           <h2>Task Manager</h2>
           <AddTask onTaskAdded={handleTaskAdded} />
           <TaskList tasks={tasks} onTaskUpdated={handleTaskUpdated} />
         </div>
-        <aside className="sidebar" aria-label="Productivity summary">
-          <MotivationWidget tasks={tasks} />
+
+        <aside className="sidebar">
+          <MotivationWidget />
         </aside>
       </div>
     </div>
