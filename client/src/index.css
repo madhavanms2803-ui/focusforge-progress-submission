@@ -17,7 +17,7 @@ body {
 }
 
 .dashboard {
-  width: 900px;
+  width: min(900px, calc(100% - 40px));
   background-color: white;
   padding: 20px;
   border-radius: 8px;
@@ -34,25 +34,15 @@ header {
   gap: 30px;
 }
 
-.task-section {
-  flex: 1;
-}
-
-.sidebar {
-  width: var(--sidebar-width);
-}
-
-.add-task-form {
-  margin-bottom: 20px;
-}
-
+.task-section { flex: 1; min-width: 0; }
+.sidebar { width: var(--sidebar-width); flex-shrink: 0; }
+.add-task-form { margin-bottom: 20px; }
 .add-task-form input {
   padding: 10px;
-  width: 250px;
+  width: min(250px, 65%);
   border: 1px solid #cbd5e1;
   border-radius: 4px;
 }
-
 .add-task-form button {
   padding: 10px 20px;
   background-color: var(--primary-color);
@@ -62,12 +52,7 @@ header {
   cursor: pointer;
   margin-left: 10px;
 }
-
-.task-list ul {
-  list-style: none;
-  padding: 0;
-}
-
+.task-list ul { list-style: none; padding: 0; }
 .task-list li {
   padding: 10px;
   border-bottom: 1px solid #f1f5f9;
@@ -75,13 +60,7 @@ header {
   align-items: center;
   gap: 10px;
 }
-
-.task-list li.completed span {
-  text-decoration: line-through;
-  color: #94a3b8;
-}
-
-/* Redesign candidate styles */
+.task-list li.completed span { text-decoration: line-through; color: #94a3b8; }
 .motivation-widget {
   background-color: #fffbeb;
   padding: 15px;
@@ -93,15 +72,19 @@ header {
   flex-direction: column;
   justify-content: center;
 }
-
-.motivation-widget h3 {
-  margin-top: 0;
-  font-size: 1rem;
-  color: #d97706;
+.motivation-widget h3 { margin-top: 0; font-size: 1rem; color: #d97706; }
+.motivation-widget p { font-style: italic; font-size: 0.9rem; color: #92400e; }
+.progress-track {
+  width: 100%; height: 10px; overflow: hidden;
+  background-color: #e2e8f0; border-radius: 999px; margin: 12px 0;
 }
-
-.motivation-widget p {
-  font-style: italic;
-  font-size: 0.9rem;
-  color: #92400e;
+.progress-fill {
+  height: 100%; background-color: var(--primary-color);
+  border-radius: inherit; transition: width 200ms ease-in-out;
+}
+.progress-count { font-weight: 600; }
+@media (max-width: 700px) {
+  body { align-items: flex-start; padding: 16px 0; }
+  .main-content { flex-direction: column; }
+  .sidebar { width: 100%; }
 }
